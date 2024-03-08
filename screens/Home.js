@@ -3,10 +3,13 @@ import { Text, View, Image, FlatList, StyleSheet, TouchableOpacity } from 'react
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFavorites } from '../context/FavoritesContext';
 
 export default Home = () => {
 
     const [cocktails, setCocktails] = useState([]);
+    // const [favorites, setFavorites] = useState([]);
+    const { favorites, setFavorites } = useFavorites();
     const navigation = useNavigation();
     // search by name
     // www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita
@@ -21,35 +24,33 @@ export default Home = () => {
     }, []);
 
     const addToFavorites = async (cocktail) => {
-        // ajoute au local storage ?
-        // import AsyncStorage from '@react-native-async-storage/async-storage';
-
-
-        // chat gpt (il utilise JSON.stringify mais je sais pas non plus si c'est nécessaire je crois que oui): 
-        // try {
-        //     await AsyncStorage.setItem(cocktails, JSON.stringify(cocktail));
-        //     console.log('Item added successfully');
-        //   } catch (error) {
-        //     console.error('Error adding item to AsyncStorage:', error);
-        //   }
-
         try {
-            const value = await AsyncStorage.getItem('@favorites');
-            let favorites = [];
-            if (value !== null) {
-                favorites = JSON.parse(value);
-            }
-            favorites.push(cocktail);
-
-            await AsyncStorage.setItem('@favorites', JSON.stringify(favorites));
+          const value = await AsyncStorage.getItem('@favorites');
+          let updatedFavorites = [];
+      
+          if (value !== null) {
+            updatedFavorites = JSON.parse(value);
+          }
+      
+          const indexToRemove = updatedFavorites.findIndex(
+            (favoriteCocktail) => favoriteCocktail.idDrink === cocktail.idDrink
+          );
+      
+          if (indexToRemove !== -1) {
+            updatedFavorites.splice(indexToRemove, 1);
+          } else {
+            updatedFavorites.push(cocktail);
+          }
+      
+          setFavorites(updatedFavorites);
+          await AsyncStorage.setItem('@favorites', JSON.stringify(updatedFavorites));
+      
         } catch (e) {
-            console.error('Error adding item to AsyncStorage:', error);
+          console.log('Error adding item to AsyncStorage:', e);
         }
+      };
+      
 
-    };
-
-    // Usage example
-        // addToFavorites(item);
 
     return (
         <View>
@@ -66,7 +67,10 @@ export default Home = () => {
                                 />
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => addToFavorites(item)}>
-                                <Ionicons name="star" size={25} color="#000" />
+                            {favorites.some(favorite => favorite.idDrink === item.idDrink) 
+                                ? <Ionicons name="star" size={25} color="#000" /> 
+                                : <Ionicons name="star" size={25} color="#FFF" />
+                            }
                             </TouchableOpacity>
                         </View>
                     )
