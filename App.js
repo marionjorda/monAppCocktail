@@ -1,9 +1,10 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, TouchableOpacityBase, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Ionicons } from '@expo/vector-icons';
 import HomeScreen from './screens/Home';
 import DetailsScreen from './screens/Details';
+import FavoritesScreen from './screens/Favorites';
 
 const Stack = createNativeStackNavigator();
 
@@ -11,8 +12,18 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen 
+          name="Home" 
+          component={HomeScreen} 
+          options={({ navigation }) => ({
+            headerRight: () => (
+              <TouchableOpacity onPress={() => navigation.navigate('Favorites')}>
+                <Ionicons name="star" size={25} color="black" style={{ marginRight: 10}}/>
+              </TouchableOpacity>
+            ),
+          })}/>
         <Stack.Screen name="Details" component={DetailsScreen} />
+        <Stack.Screen name="Favorites" component={FavoritesScreen} />
       </Stack.Navigator>
     </NavigationContainer>
 
