@@ -59,8 +59,8 @@ export default Home = () => {
                 renderItem={({ item }) => {
                     return (
                         <View style={ styles.box }>
-                            <TouchableOpacity onPress={() => navigation.navigate('Details', { cocktail: item })}>
-                                <Text>{item.strDrink}</Text>
+                            <TouchableOpacity onPress={() => navigation.navigate('Details', { cocktail: item })} style={{alignItems: 'center'}}>
+                                <Text style={styles.name}>{item.strDrink}</Text>
                                 <Image
                                     style={ styles.image }
                                     source={{ uri: item.strDrinkThumb }}

@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import HomeScreen from './screens/Home';
 import DetailsScreen from './screens/Details';
 import FavoritesScreen from './screens/Favorites';
+import ProfileScreen from './screens/Profile';
 import { FavoritesProvider } from './context/FavoritesContext';
 
 const Stack = createNativeStackNavigator();
@@ -19,13 +20,19 @@ export default function App() {
             component={HomeScreen} 
             options={({ navigation }) => ({
               headerRight: () => (
-                <TouchableOpacity onPress={() => navigation.navigate('Favorites')}>
-                  <Ionicons name="star" size={25} color="black" style={{ marginRight: 10}}/>
-                </TouchableOpacity>
+                <View style={{ flexDirection: 'row' }}>
+                  <TouchableOpacity onPress={() => navigation.navigate('Favorites')}>
+                    <Ionicons name="star" size={30} color="black" style={{ marginRight: 25}}/>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+                    <Ionicons name="person-circle-outline" size={32} color="black" style={{ marginRight: 5}}/>
+                  </TouchableOpacity>
+                </View>
               ),
             })}/>
           <Stack.Screen name="Details" component={DetailsScreen} />
           <Stack.Screen name="Favorites" component={FavoritesScreen} />
+          <Stack.Screen name="Profile" component={ProfileScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </FavoritesProvider>
