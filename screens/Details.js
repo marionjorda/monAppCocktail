@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, StyleSheet } from 'react-native';
+import { Text, View, Image, StyleSheet, ScrollView } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 export default Details = () => {
@@ -8,18 +8,20 @@ export default Details = () => {
     const { cocktail } = route.params;
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>{cocktail.strDrink}</Text>
-            <Image style={ styles.image } source={{ uri: cocktail.strDrinkThumb }} />
-            <View style={styles.ingredients}>
-                <Text style={styles.ingredient}>- {cocktail.strIngredient1} {cocktail.strMeasure1}</Text>
-                <Text style={styles.ingredient}>- {cocktail.strIngredient2} {cocktail.strMeasure2}</Text>
-                <Text style={styles.ingredient}>- {cocktail.strIngredient3} {cocktail.strMeasure3}</Text>
-                <Text style={styles.ingredient}>- {cocktail.strIngredient4} {cocktail.strMeasure4}</Text>
+        <ScrollView>
+            <View style={styles.container}>
+                <Text style={styles.title}>{cocktail.strDrink}</Text>
+                <Image style={ styles.image } source={{ uri: cocktail.strDrinkThumb }} />
+                <View style={styles.ingredients}>
+                    <Text style={styles.ingredient}>- {cocktail.strIngredient1} {cocktail.strMeasure1}</Text>
+                    <Text style={styles.ingredient}>- {cocktail.strIngredient2} {cocktail.strMeasure2}</Text>
+                    <Text style={styles.ingredient}>- {cocktail.strIngredient3} {cocktail.strMeasure3}</Text>
+                    <Text style={styles.ingredient}>- {cocktail.strIngredient4} {cocktail.strMeasure4}</Text>
+                </View>
+                
+                <Text style={styles.description}>{cocktail.strInstructions}</Text>
             </View>
-            
-            <Text style={styles.description}>{cocktail.strInstructions}</Text>
-        </View>
+        </ScrollView>
     )
 }
 
